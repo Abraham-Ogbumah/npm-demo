@@ -4,6 +4,8 @@ const express = require('express')
 const app = express()
 
 app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(express.static('public'))
 
 app.use(logger)
 
@@ -72,3 +74,11 @@ function validateCourse(course) {
 
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Listening on port ${port}...`))
+.on('error', error => {
+    if (error.code === 'EADDRINUSE') {
+        console.error(`Port ${port} is already in use`);
+        // You can also code to try a different port here
+    } else {
+        console.error(error);
+    }
+});
